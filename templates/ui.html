@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>File Upload and Comment Form</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f8ff;
+            margin: 5% 5% 5% 25%;
+            padding: 0;
+            display: absolute;
+            align: center;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        #container {
+            background-color: #ffffff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            padding: 40px;
+            max-width: 580px;
+            width: 100%;
+            text-align: center;
+        }
+
+        #container h1 {
+            margin-bottom: 20px;
+            font-size: 24px;
+            color: #333333;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            color: #333333;
+        }
+
+        .form-group input[type="file"],
+        .form-group textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #cccccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            height: 100px;
+        }
+
+        .form-group button {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .form-group button:hover {
+            background-color: #0056b3;
+        }
+
+        .preview-container {
+            margin-top: 20px;
+        }
+
+        #previewImage {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            transition: opacity 1s;
+            opacity: 0;
+        }
+    </style>
+</head>
+<body>
+    <div id="container">
+        <h1>Threat Model with GenAi</h1>
+        <form action="/scan" method="post" enctype="multipart/form-data">
+            <div class="form-group">
+                <label for="fileInput">Choose a file:</label>
+                <input type="file" name='file' id="fileInput" accept="image/*" required><br>
+            </div>
+
+            <div class="preview-container" id="previewContainer" style="display: none;">
+                <h2>Image Preview</h2>
+                <img id="previewImage" alt="Image Preview">
+            </div>
+
+            <div class="form-group">
+                <label for="comment">Your Prompt:</label>
+                <textarea id="comment" name="comment" rows="4" style="height:260px" required>
+General Information:
+1. Project/System Overview
+   - Brief description of the system.
+   - Key functionalities and objectives.
+   - Data flow (input, processing, output).
+
+2. Stakeholders
+   - Project owners.
+   - End-users.
+   - Development and operations teams.
+
+Technologies and Environment:
+1. Application Technologies
+   - Programming languages used (e.g., Python, Java, JavaScript).
+   - Frameworks and version numbers (e.g., Django 3.1.7, Angular 12).
+
+2. Hosting Environment
+   - Cloud providers (e.g., AWS, Azure, Google Cloud).
+   - On-premise details (server type, OS, network configuration).
+   - Hosting region or data center locations.
+
+3. Server Technologies
+   - Web servers (e.g., Apache 2.4, Nginx 1.20.1).
+   - Database servers (e.g., MySQL 8.0, PostgreSQL 13).
+   - Operating systems and version numbers (e.g., Ubuntu 20.04, Windows Server 2019).
+
+Third-Party Services and Integrations:
+1. Service Providers
+   - List of external services used (e.g., Firebase, Stripe, Twilio).
+   - Details on API endpoints, authentication methods, and data exchanged.
+
+2. Authentication and Authorization
+   - Identity providers (e.g., OAuth, OpenID Connect, SAML).
+   - Libraries or services used for managing authentication (e.g., Auth0, Okta, Keycloak).
+
+3. DevOps and CI/CD
+   - Tools and platforms (e.g., Jenkins, GitHub Actions, Azure DevOps).
+   - Deployment pipelines and practices.
+
+Open Source Libraries and Dependencies:
+1. Libraries Used
+   - Comprehensive list of open-source libraries and dependencies.
+   - Versions of each library (e.g., React 17, Lodash 4.17.21).
+   - Any custom modifications to these libraries.
+
+2. Package Management
+   - Package managers used (e.g., npm, pip, Maven).
+   - Dependency resolution strategies and updates.
+
+Security Measures and Practices:
+1. Security Controls
+   - Current security measures in place (e.g., firewalls, intrusion detection systems).
+   - Encryption practices (e.g., data at rest, data in transit).
+
+2. Access Controls
+   - User roles and permissions.
+   - Network segmentation practices.
+
+3. Compliance and Standards
+   - Industry standards adhered to (e.g., GDPR, HIPAA, PCI-DSS).
+   - Internal security policies and procedures.
+
+Incident Handling:
+1. Monitoring and Logging
+   - Tools and services for monitoring (e.g., Splunk, ELK Stack).
+   - Logging practices and retention policies.
+
+2. Incident Response Plan
+   - Outline of procedures for handling security incidents.
+   - Key contacts and their roles in incident response.
+
+Miscellaneous:
+1. Known Vulnerabilities
+   - Any known vulnerabilities and past incidents related to the system.
+   - Plans or actions taken to mitigate these vulnerabilities.
+
+                </textarea>
+            </div>
+            <div class="form-group">
+                <button type="submit">Submit</button>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        document.getElementById('fileInput').addEventListener('change', function(event) {
+            const file = event.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        document.getElementById('previewImage').src = e.target.result;
+                        document.getElementById('previewContainer').style.display = 'block';
+
+                        setTimeout(() => {
+                            document.getElementById('previewImage').style.opacity = 1;
+                            document.getElementById('previewImage').style.display = 'flex';
+                            document.getElementById('container').style.maxWidth = '85%';
+                            document.querySelector('body').style.margin = '5% 5% 5% 15%';
+                        }, 1000); // 1-second delay for the transition
+                    };
+
+                    reader.readAsDataURL(file);
+                }
+            });
+    </script>
+
+</body>
+</html>
